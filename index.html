@@ -915,19 +915,22 @@
     // cek apakah semua personality = 0
 const allZeroPersonality = Object.values(personalityScores).every(v => v === 0);
 
+const defaultInfoEl = document.getElementById('default-info');
+
 if (allZeroPersonality) {
     const defaultPrograms = [
         ['MNJ', 100],
         ['TIF', 90],
         ['PAI', 85]
     ];
-    document.getElementById('default-info').classList.remove('hidden');
 
+    defaultInfoEl.classList.remove('hidden');
     showResult(defaultPrograms, personalityScores);
-}
- else {
+} else {
+    defaultInfoEl.classList.add('hidden');
     showResult(sortedPrograms, personalityScores);
 }
+
 
 }
 
@@ -1036,7 +1039,7 @@ Terima kasih
 WhatsApp: ${userData.whatsapp}
 ${userData.referensi !== '-' ? `Referensi: ${userData.referensi}` : ''}`;
             
-            const waNumber = '6281287923455'; // GANTI DENGAN NOMOR PMB UIA
+            const waNumber = '6281918499799'; // GANTI DENGAN NOMOR PMB UIA
             document.getElementById('btn-whatsapp').href = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
         }
         
