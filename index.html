@@ -373,7 +373,16 @@
       <div id="personality-bars" class="space-y-3"></div>
      </div><!-- Top 3 Rekomendasi -->
      <div class="mb-6">
-      <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 text-center">🏆 Top 3 Rekomendasi Program Studi</h3><!-- Rank 1 -->
+      <p id="default-info"
+   class="text-center text-sm sm:text-base text-orange-600 font-semibold mb-3 hidden">
+ ⚠️ Jika kamu belum menjawab semua soal,  
+ kami merekomendasikan program studi populer berikut.
+</p>
+
+<h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 text-center">
+ 🏆 Top 3 Rekomendasi Program Studi
+</h3>
+
       <div id="rank-1" class="bg-gradient-to-r from-yellow-100 to-yellow-50 border-4 border-yellow-400 rounded-2xl p-5 sm:p-6 mb-4">
        <div class="flex items-start gap-3 mb-3"><span class="text-4xl sm:text-5xl medal">🥇</span>
         <div class="flex-1">
@@ -903,7 +912,23 @@
         .sort(([, a], [, b]) => b - a)
         .slice(0, 3);
 
+    // cek apakah semua personality = 0
+const allZeroPersonality = Object.values(personalityScores).every(v => v === 0);
+
+if (allZeroPersonality) {
+    const defaultPrograms = [
+        ['MNJ', 100],
+        ['TIF', 90],
+        ['PAI', 85]
+    ];
+    document.getElementById('default-info').classList.remove('hidden');
+
+    showResult(defaultPrograms, personalityScores);
+}
+ else {
     showResult(sortedPrograms, personalityScores);
+}
+
 }
 
         
@@ -922,7 +947,8 @@
             const personalityBarsEl = document.getElementById('personality-bars');
             personalityBarsEl.innerHTML = '';
             
-            const maxPersonalityScore = Math.max(...Object.values(personalityScores));
+            const maxPersonalityScore = Math.max(...Object.values(personalityScores)) || 1;
+
             Object.entries(personalityScores).forEach(([type, score]) => {
                 const percentage = maxPersonalityScore > 0 ? (score / maxPersonalityScore) * 100 : 0;
                 const typeInfo = personalityTypes[type];
