@@ -852,6 +852,27 @@
             }, 3000);
         });
         
+        const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzt517SbD45tut44BTkfHchvISHtFXx_-O7bisidCeX1EuxYGuaya9FlvR7gdQgya85/exec";
+
+        function saveToGoogleSheet(topPrograms) {
+    fetch(GOOGLE_SHEET_URL, {
+    method: "POST",
+    body: JSON.stringify({
+        nama: userData.nama,
+        whatsapp: userData.whatsapp,
+        sekolah: userData.sekolah,
+        referensi: userData.referensi,
+        answers: answers,
+        hasil_1: programs[topPrograms[0][0]].name,
+        hasil_2: topPrograms[1] ? programs[topPrograms[1][0]].name : "-",
+        hasil_3: topPrograms[2] ? programs[topPrograms[2][0]].name : "-"
+    })
+})
+.then(() => console.log("Berhasil kirim ke Google Sheet"))
+.catch(err => console.error("Gagal simpan:", err));
+
+}
+
         // Calculate result
         function calculateResult() {
     const scores = {};
@@ -931,7 +952,7 @@ if (allZeroPersonality) {
     showResult(sortedPrograms, personalityScores);
 }
 
-
+saveToGoogleSheet(sortedPrograms);
 }
 
         
@@ -1174,6 +1195,7 @@ document.head.appendChild(style);
                 mapToEditPanelValues
             });
         }
+
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9aca7778e41b9e34',t:'MTc2NTUxMzYxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
