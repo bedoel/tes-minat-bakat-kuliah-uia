@@ -855,23 +855,36 @@
         const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzt517SbD45tut44BTkfHchvISHtFXx_-O7bisidCeX1EuxYGuaya9FlvR7gdQgya85/exec";
 
         function saveToGoogleSheet(topPrograms) {
-    fetch(GOOGLE_SHEET_URL, {
-    method: "POST",
-    body: JSON.stringify({
-        nama: userData.nama,
-        whatsapp: userData.whatsapp,
-        sekolah: userData.sekolah,
-        referensi: userData.referensi,
-        answers: answers,
-        hasil_1: programs[topPrograms[0][0]].name,
-        hasil_2: topPrograms[1] ? programs[topPrograms[1][0]].name : "-",
-        hasil_3: topPrograms[2] ? programs[topPrograms[2][0]].name : "-"
-    })
-})
-.then(() => console.log("Berhasil kirim ke Google Sheet"))
-.catch(err => console.error("Gagal simpan:", err));
+    const maxScore = topPrograms[0][1];
 
+    const prodi1 = topPrograms[0];
+    const prodi2 = topPrograms[1] || null;
+    const prodi3 = topPrograms[2] || null;
+
+    fetch(GOOGLE_SHEET_URL, {
+        method: "POST",
+        body: JSON.stringify({
+            nama: userData.nama,
+            whatsapp: userData.whatsapp,
+            sekolah: userData.sekolah,
+            referensi: userData.referensi,
+
+            prodi_1: programs[prodi1[0]].name,
+            persen_1: Math.round((prodi1[1] / maxScore) * 100),
+
+            prodi_2: prodi2 ? programs[prodi2[0]].name : "-",
+            persen_2: prodi2 ? Math.round((prodi2[1] / maxScore) * 100) : 0,
+
+            prodi_3: prodi3 ? programs[prodi3[0]].name : "-",
+            persen_3: prodi3 ? Math.round((prodi3[1] / maxScore) * 100) : 0,
+
+            jawaban: answers
+        })
+    })
+    .then(() => console.log("✅ Berhasil simpan ke Google Sheet"))
+    .catch(err => console.error("❌ Gagal simpan:", err));
 }
+
 
         // Calculate result
         function calculateResult() {
